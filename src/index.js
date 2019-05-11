@@ -8,26 +8,23 @@ class App extends React.Component {
 
   componentDidMount() {
     window.navigator.geolocation.getCurrentPosition(
+      //success callback
       position => this.setState({ lat: position.coords.latitude }),
+      //failure callback
       err => this.setState({ errorMessage: err.message })
     )
   }
 
-  renderContent() {
-    if (!this.state.errorMessage && this.state.lat) {
-      return <SeasonDisplay lat={this.state.lat} />
-    }
-
+  render() {
     if (this.state.errorMessage && !this.state.lat) {
       return <div>Error: {this.state.errorMessage}</div>
     }
-    return <Spinner message={'please accept location request'} />
-  }
-
-  render() {
+    if (!this.state.errorMessage && this.state.lat) {
+      return <SeasonDisplay lat={this.state.lat} />
+    }
     return (
       <div>
-        {this.renderContent()}
+        <Spinner message={'Please accept location request'} />
       </div>
     )
   }
